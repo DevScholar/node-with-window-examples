@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notepad (node-with-window)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: #fff;
+        }
+        #editor {
+            flex: 1;
+            padding: 16px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            border: none;
+            resize: none;
+            outline: none;
+            background: #fff;
+        }
+        #status {
+            background: #eee;
+            padding: 4px 8px;
+            font-size: 12px;
+            border-top: 1px solid #ccc;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="editor" placeholder="Type your text here..."></textarea>
+    <div id="status">Ready</div>
+
+    <script type="module">
+        const editor = document.getElementById('editor');
+        const status = document.getElementById('status');
+        let currentFile = null;
+        let isModified = false;
+
+        function setStatus(text) {
+            status.textContent = text;
+        }
+
+        function setModified(modified) {
+            isModified = modified;
+            updateTitle();
+        }
+
+        function updateTitle() {
+            const filename = currentFile ? currentFile.split(/[/\\]/).pop() : 'Untitled';
+            const mod = isModified ? ' *' : '';
+            document.title = `${filename}${mod} - Notepad`;
+        }
+
+        function confirmDiscard() {
+            if (!isModified) return true;
+            return confirm('You have unsaved changes. Do you want to discard them?');
+        }
+
+        async function newFile() {
+            if (!confirmDiscard()) return;
+            editor.value = '';
+            currentFile = null;
+            setModified(false);
+            setStatus('New file');
+        }
+
+        async function openFile() {
+            if (!confirmDiscard()) return;
+            try {
+                const filePath = await window.ipcRenderer.invoke('show-open-dialog', {
+                    title: 'Open File',
+                    filters: [
+                        { name: 'Text Files', extensions: ['txt', 'md', 'json', 'js', 'ts', 'html', 'css'] },
+                        { name: 'All Files', extensions: ['*'] }
+                    ],
+                    properties: ['openFile']
+                });
+                if (filePath) {
+                    const content = await window.ipcRenderer.invoke('read-file', filePath);
+                    editor.value = content;
+                    currentFile = filePath;
+                    setModified(false);
+                    setStatus(`Opened: ${filePath}`);
+                }
+            } catch (e) {
+                console.error('Open error:', e);
+                setStatus('Error opening file');
+            }
+        }
+
+        async function saveFileAs() {
+            console.log('[saveFileAs] starting...');
+            try {
+                console.log('[saveFileAs] invoking show-save-dialog...');
+                const filePath = await window.ipcRenderer.invoke('show-save-dialog', {
+                    title: 'Save File As',
+                    defaultPath: currentFile || 'untitled.txt',
+                    filters: [
+                        { name: 'Text Files', extensions: ['txt'] },
+                        { name: 'All Files', extensions: ['*'] }
+                    ]
+                });
+                console.log('[saveFileAs] got filePath:', filePath, 'type:', typeof filePath);
+                if (filePath && typeof filePath === 'string') {
+                    console.log('[saveFileAs] calling saveFile with path:', filePath);
+                    await saveFile(filePath);
+                    console.log('[saveFileAs] saveFile returned');
+                } else {
+                    console.log('[saveFileAs] no filePath or invalid, user cancelled or error');
+                    if (filePath === null) {
+                        setStatus('Save cancelled');
+                    } else if (filePath === undefined) {
+                        setStatus('Save cancelled or error');
+                    } else {
+                        setStatus('Invalid file path');
+                    }
+                }
+            } catch (e) {
+                console.error('[saveFileAs] Error:', e);
+                setStatus('Error saving file: ' + e.message);
+            }
+        }
+
+        async function saveFile(filePath) {
+            console.log('[saveFile] called with:', filePath, 'content length:', editor.value.length);
+            try {
+                console.log('[saveFile] invoking write-file...');
+                const result = await window.ipcRenderer.invoke('write-file', filePath, editor.value);
+                console.log('[saveFile] write-file result:', result);
+                currentFile = filePath;
+                setModified(false);
+                setStatus(`Saved: ${filePath}`);
+            } catch (e) {
+                console.error('[saveFile] Error:', e);
+                setStatus('Error saving file: ' + e.message);
+            }
+        }
+
+        async function save() {
+            if (currentFile) {
+                await saveFile(currentFile);
+            } else {
+                await saveFileAs();
+            }
+        }
+
+        editor.addEventListener('input', () => {
+            setModified(true);
+        });
+
+        editor.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                save();
+            }
+            if (e.ctrlKey && e.key === 'o') {
+                e.preventDefault();
+                openFile();
+            }
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
+                newFile();
+            }
+        });
+
+        if (window.ipcRenderer && window.ipcRenderer.on) {
+            window.ipcRenderer.on('menu-new', () => newFile());
+            window.ipcRenderer.on('menu-open', () => openFile());
+            window.ipcRenderer.on('menu-save', () => save());
+            window.ipcRenderer.on('menu-save-as', () => saveFileAs());
+
+            // Handle Edit menu commands sent from the main process.
+            // Focus the editor first so execCommand operates on it.
+            window.ipcRenderer.on('menu-edit', (event, args) => {
+                const cmd = args[0];
+                editor.focus();
+                if (cmd === 'selectAll') {
+                    editor.select();
+                } else {
+                    document.execCommand(cmd);
+                }
+            });
+        }
+
+        setStatus('Ready - Use menu or Ctrl+S/O/N');
+        updateTitle();
+</script>
+</body>
+</html>

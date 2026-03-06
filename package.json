@@ -1,0 +1,21 @@
+{
+  "name": "node-with-window-examples",
+  "version": "1.0.0",
+  "description": "Examples for node-with-window",
+  "type": "module",
+  "scripts": {
+    "notepad": "node start.js src/notepad/notepad.ts",
+    "postinstall": "node postinstall.js"
+  },
+  "dependencies": {
+    "esbuild": "^0.27.3",
+    "@devscholar/node-with-window": "file:../node-with-window"
+  },
+  "optionalDependencies": {
+    "@devscholar/node-ps1-dotnet": "^0.0.6",
+    "@devscholar/node-with-gjs": "^0.0.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
