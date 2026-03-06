@@ -9,8 +9,8 @@ Examples for [Node with Window](https://github.com/devscholar/node-with-window),
 ### Windows
 
 - Node.js 18+
-- PowerShell 5.1+
-- .NET 6+ runtime
+- PowerShell 5.1
+- .NET Framework 4.8
 - WebView2 runtime (pre-installed on Windows 11; [download](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) for Windows 10)
 
 ### Linux
