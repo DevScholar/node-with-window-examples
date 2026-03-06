@@ -12,8 +12,8 @@
     "@devscholar/node-with-window": "file:../node-with-window"
   },
   "optionalDependencies": {
-    "@devscholar/node-ps1-dotnet": "^0.0.6",
-    "@devscholar/node-with-gjs": "^0.0.5"
+    "@devscholar/node-ps1-dotnet": "latest",
+    "@devscholar/node-with-gjs": "latest"
   },
   "engines": {
     "node": ">=18.0.0"
