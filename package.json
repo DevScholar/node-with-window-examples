@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "esbuild": "^0.27.3",
-    "@devscholar/node-with-window": "file:../node-with-window"
+    "@devscholar/node-with-window": "latest"
   },
   "optionalDependencies": {
     "@devscholar/node-ps1-dotnet": "latest",
