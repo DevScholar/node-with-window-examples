@@ -15,6 +15,7 @@ async function main() {
         minWidth: 400,
         minHeight: 300,
         resizable: true,
+        icon: path.join(__dirname, '../../public/notepad-icon.jpg'),
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
