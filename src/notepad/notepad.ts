@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from '@devscholar/node-with-window';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'node:path';
 import * as url from 'node:url';
 import * as fs from 'node:fs';

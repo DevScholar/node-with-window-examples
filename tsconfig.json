@@ -8,7 +8,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "strict": false
+    "strict": false,
+    "paths": {
+      "electron": ["./node_modules/@devscholar/node-with-window/dist/index.js"]
+    }
   },
   "include": ["src/**/*"]
 }

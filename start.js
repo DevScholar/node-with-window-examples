@@ -1,12 +1,18 @@
 // start.js - Build and run TypeScript files with runtime selection
-import { spawn } from 'child_process';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
+import { spawn } from 'node:child_process';
+import path from 'node:path';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import * as esbuild from 'esbuild';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+let __filename, __dirname;
+try {
+    __filename = fileURLToPath(import.meta.url);
+    __dirname = path.dirname(__filename);
+} catch {
+    __filename = process.argv[1];
+    __dirname = path.dirname(__filename);
+}
 
 const args = process.argv.slice(2);
 let runtime = 'node';
@@ -78,7 +84,10 @@ async function buildAndRun() {
         target: 'node18',
         sourcemap: true,
         logLevel: 'info',
-        external: external
+        external: external,
+        alias: {
+            electron: '@devscholar/node-with-window'
+        }
     });
 
     console.log('Build complete.');

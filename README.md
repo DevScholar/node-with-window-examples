@@ -56,6 +56,17 @@ node start.js src/notepad/notepad.ts --runtime=node
 
 Supported runtimes: `node`, `bun`, `deno`
 
+### Running with Deno or Bun Directly
+
+If you want to run `start.js` directly with Deno or Bun instead of Node.js:
+
+```bash
+deno run --allow-all start.js src/notepad/notepad.ts
+bun start.js src/notepad/notepad.ts
+```
+
+Note: The `--runtime=deno` and `--runtime=bun` options above use Node.js to run `start.js`, which then spawns the specified runtime to execute the compiled JavaScript. If you want to run `start.js` itself with Deno/Bun, use the commands above instead.
+
 ### What it does
 
 - Opens a window with a notepad editor
