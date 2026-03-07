@@ -69,13 +69,3 @@ Supported runtimes: `node`, `bun`, `deno`
 - The WebKit sandbox is disabled automatically by the library
   (`WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1`), which is needed in VMware
   and other VMs where `bwrap` cannot create user namespaces.
-- After any change to the `node-with-window` or `node-ps1-dotnet` source, rebuild from the repo root before running:
-  ```bash
-  # incremental rebuild
-  node ../rebuild.js
-  # or wipe stale dist/ folders first
-  node ../rebuild.js --clean
-  ```
-  All three packages (`node-ps1-dotnet`, `node-with-window`, `node-with-window-examples`)
-  are wired together via `file:` symlinks in `node_modules`, so no manual copying is needed
-  after a rebuild.
