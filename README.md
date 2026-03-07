@@ -51,7 +51,7 @@ dependency from source using the bundled esbuild.
 Run the following command with the `--runtime` parameter to select your preferred runtime:
 
 ```bash
-node start.js notepad/notepad.ts --runtime=node
+node start.js src/notepad/notepad.ts --runtime=node
 ```
 
 Supported runtimes: `node`, `bun`, `deno`
