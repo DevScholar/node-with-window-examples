@@ -40,22 +40,22 @@ async function main() {
                 {
                     label: 'New',
                     accelerator: 'CmdOrCtrl+N',
-                    click: () => win.send('menu-new')
+                    click: () => win.webContents.send('menu-new')
                 },
                 {
                     label: 'Open...',
                     accelerator: 'CmdOrCtrl+O',
-                    click: () => win.send('menu-open')
+                    click: () => win.webContents.send('menu-open')
                 },
                 {
                     label: 'Save',
                     accelerator: 'CmdOrCtrl+S',
-                    click: () => win.send('menu-save')
+                    click: () => win.webContents.send('menu-save')
                 },
                 {
                     label: 'Save As...',
                     accelerator: 'CmdOrCtrl+Shift+S',
-                    click: () => win.send('menu-save-as')
+                    click: () => win.webContents.send('menu-save-as')
                 },
                 { type: 'separator' },
                 {
@@ -68,20 +68,20 @@ async function main() {
         {
             label: 'Edit',
             submenu: [
-                { label: 'Undo',       accelerator: 'CmdOrCtrl+Z', role: 'undo',      click: () => win.send('menu-edit', 'undo') },
-                { label: 'Redo',       accelerator: 'CmdOrCtrl+Y', role: 'redo',      click: () => win.send('menu-edit', 'redo') },
+                { label: 'Undo',       accelerator: 'CmdOrCtrl+Z', role: 'undo',      click: () => win.webContents.send('menu-edit', 'undo') },
+                { label: 'Redo',       accelerator: 'CmdOrCtrl+Y', role: 'redo',      click: () => win.webContents.send('menu-edit', 'redo') },
                 { type: 'separator' },
-                { label: 'Cut',        accelerator: 'CmdOrCtrl+X', role: 'cut',       click: () => win.send('menu-edit', 'cut') },
-                { label: 'Copy',       accelerator: 'CmdOrCtrl+C', role: 'copy',      click: () => win.send('menu-edit', 'copy') },
-                { label: 'Paste',      accelerator: 'CmdOrCtrl+V', role: 'paste',     click: () => win.send('menu-edit', 'paste') },
-                { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectAll', click: () => win.send('menu-edit', 'selectAll') }
+                { label: 'Cut',        accelerator: 'CmdOrCtrl+X', role: 'cut',       click: () => win.webContents.send('menu-edit', 'cut') },
+                { label: 'Copy',       accelerator: 'CmdOrCtrl+C', role: 'copy',      click: () => win.webContents.send('menu-edit', 'copy') },
+                { label: 'Paste',      accelerator: 'CmdOrCtrl+V', role: 'paste',     click: () => win.webContents.send('menu-edit', 'paste') },
+                { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectAll', click: () => win.webContents.send('menu-edit', 'selectAll') }
             ]
         },
         {
             label: 'View',
             submenu: [
-                { label: 'Reload',          accelerator: 'CmdOrCtrl+R', role: 'reload',          click: () => win.reload() },
-                { label: 'Toggle DevTools', accelerator: 'F12',          role: 'toggleDevTools',  click: () => win.openDevTools() }
+                { label: 'Reload',          accelerator: 'CmdOrCtrl+R', role: 'reload',          click: () => win.webContents.reload() },
+                { label: 'Toggle DevTools', accelerator: 'F12',          role: 'toggleDevTools',  click: () => win.webContents.openDevTools() }
             ]
         },
         {
