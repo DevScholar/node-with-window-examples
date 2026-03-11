@@ -86,7 +86,7 @@
                     properties: ['openFile']
                 });
                 if (filePath) {
-                    const content = await window.requireAsync('fs').readFileSync(filePath, 'utf-8');
+                    const content = window.require('fs').readFileSync(filePath, 'utf-8');
                     editor.value = content;
                     currentFile = filePath;
                     setModified(false);
@@ -134,7 +134,7 @@
         async function saveFile(filePath) {
             console.log('[saveFile] called with:', filePath, 'content length:', editor.value.length);
             try {
-                await window.requireAsync('fs').writeFileSync(filePath, editor.value, 'utf-8');
+                window.require('fs').writeFileSync(filePath, editor.value, 'utf-8');
                 currentFile = filePath;
                 setModified(false);
                 setStatus(`Saved: ${filePath}`);
