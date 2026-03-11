@@ -16,16 +16,16 @@
 
         button.addEventListener('click', async () => {
             try {
-                const os = await window.requireAsync('os');
-                const platform = os.platform();
-                const release = os.release();
-                const type = os.type();
-                const arch = os.arch();
-                const hostname = os.hostname();
-                const homedir = os.homedir();
-                const cpus = os.cpus();
-                const totalMem = os.totalmem();
-                const freeMem = os.freemem();
+                const os = window.requireAsync('os');
+                const platform = await os.platform();
+                const release = await os.release();
+                const type = await os.type();
+                const arch = await os.arch();
+                const hostname = await os.hostname();
+                const homedir = await os.homedir();
+                const cpus = await os.cpus();
+                const totalMem = await os.totalmem();
+                const freeMem = await os.freemem();
 
                 result.innerHTML = `
                     <p><strong>Platform:</strong> ${platform}</p>
