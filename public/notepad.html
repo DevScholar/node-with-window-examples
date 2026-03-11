@@ -86,7 +86,7 @@
                     properties: ['openFile']
                 });
                 if (filePath) {
-                    const content = await window.ipcRenderer.invoke('read-file', filePath);
+                    const content = await window.requireAsync('fs').readFileSync(filePath, 'utf-8');
                     editor.value = content;
                     currentFile = filePath;
                     setModified(false);
@@ -134,9 +134,7 @@
         async function saveFile(filePath) {
             console.log('[saveFile] called with:', filePath, 'content length:', editor.value.length);
             try {
-                console.log('[saveFile] invoking write-file...');
-                const result = await window.ipcRenderer.invoke('write-file', filePath, editor.value);
-                console.log('[saveFile] write-file result:', result);
+                await window.requireAsync('fs').writeFileSync(filePath, editor.value, 'utf-8');
                 currentFile = filePath;
                 setModified(false);
                 setStatus(`Saved: ${filePath}`);

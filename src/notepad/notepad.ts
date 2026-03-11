@@ -1,7 +1,6 @@
 import { app, BrowserWindow, ipcMain } from '@devscholar/node-with-window';
 import * as path from 'node:path';
 import * as url from 'node:url';
-import * as fs from 'node:fs';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -23,10 +22,6 @@ async function main() {
         }
     });
 
-    // NOTE: Handlers must NOT be async. The node-ps1-dotnet bridge blocks Node.js
-    // inside a synchronous readSync() loop, so Promise microtasks produced by async
-    // functions can never run. Sync handlers return values directly and the bridge
-    // replies to the renderer immediately.
     ipcMain.handle('show-open-dialog', (_event, options) => {
         const result = win.showOpenDialog(options);
         return result && result.length > 0 ? result[0] : undefined;
@@ -34,15 +29,6 @@ async function main() {
 
     ipcMain.handle('show-save-dialog', (_event, options) => {
         return win.showSaveDialog(options);
-    });
-
-    ipcMain.handle('read-file', (_event, filePath: string) => {
-        return fs.readFileSync(filePath, 'utf-8');
-    });
-
-    ipcMain.handle('write-file', (_event, filePath: string, content: string) => {
-        fs.writeFileSync(filePath, content, 'utf-8');
-        return true;
     });
 
     win.loadFile(path.join(__dirname, '../../public/notepad.html'));
