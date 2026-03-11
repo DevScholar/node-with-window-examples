@@ -2,46 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Require Test</title>
+    <title>window.require — Sync XHR Demo</title>
 </head>
 <body>
-    <h1>Require Test - OS Information</h1>
-    <button id="getOsInfo">Get OS Info</button>
-    <div id="result"></div>
+    <h2>window.require — Sync XHR + Local HTTP Server</h2>
+    <p>
+        <code>window.require(moduleName).methodName(...args)</code> is truly synchronous.<br>
+        No <code>await</code>, no callbacks — just like real Electron with <code>nodeIntegration: true</code>.
+    </p>
 
-    <script type="module">
-        const button = document.getElementById('getOsInfo');
-        const result = document.getElementById('result');
+    <button onclick="runSyncRequire()">Run</button>
+    <p>Time: <span id="time">—</span></p>
+    <pre id="result">—</pre>
 
-        button.addEventListener('click', async () => {
-            try {
-                const os = window.requireAsync('os');
-                const platform = await os.platform();
-                const release = await os.release();
-                const type = await os.type();
-                const arch = await os.arch();
-                const hostname = await os.hostname();
-                const homedir = await os.homedir();
-                const cpus = await os.cpus();
-                const totalMem = await os.totalmem();
-                const freeMem = await os.freemem();
+    <script>
+        function runSyncRequire() {
+            var t0 = Date.now();
 
-                result.innerHTML = `
-                    <p><strong>Platform:</strong> ${platform}</p>
-                    <p><strong>OS Type:</strong> ${type}</p>
-                    <p><strong>Release:</strong> ${release}</p>
-                    <p><strong>Architecture:</strong> ${arch}</p>
-                    <p><strong>Hostname:</strong> ${hostname}</p>
-                    <p><strong>Home Directory:</strong> ${homedir}</p>
-                    <p><strong>CPU Count:</strong> ${cpus.length}</p>
-                    <p><strong>Total Memory:</strong> ${(totalMem / 1024 / 1024 / 1024).toFixed(2)} GB</p>
-                    <p><strong>Free Memory:</strong> ${(freeMem / 1024 / 1024 / 1024).toFixed(2)} GB</p>
-                `;
-            } catch (e) {
-                result.innerHTML = `<p style="color: red;">Error: ${e.message}</p>`;
-            }
-        });
+            var os       = window.require('os');
+            var platform = os.platform();
+            var arch     = os.arch();
+            var hostname = os.hostname();
+            var homedir  = os.homedir();
+            var mem      = os.totalmem();
+            var free     = os.freemem();
+
+            var elapsed = Date.now() - t0;
+
+            document.getElementById('time').textContent =
+                elapsed + ' ms for 6 calls (' + Math.round(elapsed / 6) + ' ms each)';
+
+            document.getElementById('result').textContent =
+                'Platform: ' + platform +
+                '\nArch:     ' + arch +
+                '\nHostname: ' + hostname +
+                '\nHomedir:  ' + homedir +
+                '\nMemory:   ' + (mem  / 1024 / 1024 / 1024).toFixed(2) + ' GB total' +
+                '\n          ' + (free / 1024 / 1024 / 1024).toFixed(2) + ' GB free';
+        }
     </script>
 </body>
 </html>
