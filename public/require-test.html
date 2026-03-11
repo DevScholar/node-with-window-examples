@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Require Test</title>
+</head>
+<body>
+    <h1>Require Test - OS Information</h1>
+    <button id="getOsInfo">Get OS Info</button>
+    <div id="result"></div>
+
+    <script type="module">
+        const button = document.getElementById('getOsInfo');
+        const result = document.getElementById('result');
+
+        button.addEventListener('click', async () => {
+            try {
+                const os = await window.requireAsync('os');
+                const platform = os.platform();
+                const release = os.release();
+                const type = os.type();
+                const arch = os.arch();
+                const hostname = os.hostname();
+                const homedir = os.homedir();
+                const cpus = os.cpus();
+                const totalMem = os.totalmem();
+                const freeMem = os.freemem();
+
+                result.innerHTML = `
+                    <p><strong>Platform:</strong> ${platform}</p>
+                    <p><strong>OS Type:</strong> ${type}</p>
+                    <p><strong>Release:</strong> ${release}</p>
+                    <p><strong>Architecture:</strong> ${arch}</p>
+                    <p><strong>Hostname:</strong> ${hostname}</p>
+                    <p><strong>Home Directory:</strong> ${homedir}</p>
+                    <p><strong>CPU Count:</strong> ${cpus.length}</p>
+                    <p><strong>Total Memory:</strong> ${(totalMem / 1024 / 1024 / 1024).toFixed(2)} GB</p>
+                    <p><strong>Free Memory:</strong> ${(freeMem / 1024 / 1024 / 1024).toFixed(2)} GB</p>
+                `;
+            } catch (e) {
+                result.innerHTML = `<p style="color: red;">Error: ${e.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

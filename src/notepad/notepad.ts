@@ -102,8 +102,6 @@ async function main() {
         }
     ]);
 
-    win.show();
-
     console.log('Notepad started');
 }
 

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "notepad": "node start.js src/notepad/notepad.ts",
+    "require-test": "node start.js src/require-test/require-test.ts",
     "postinstall": "node postinstall.js"
   },
   "dependencies": {
