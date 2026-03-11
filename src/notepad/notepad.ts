@@ -7,7 +7,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 async function main() {
     await app.whenReady();
 
-    const win = await BrowserWindow.create({
+    const win = new BrowserWindow({
         title: 'Notepad (node-with-window)',
         width: 800,
         height: 600,

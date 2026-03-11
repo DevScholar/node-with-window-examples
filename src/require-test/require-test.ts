@@ -7,7 +7,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 async function main() {
     await app.whenReady();
 
-    const win = await BrowserWindow.create({
+    const win = new BrowserWindow({
         title: 'Require Test',
         width: 600,
         height: 400,
