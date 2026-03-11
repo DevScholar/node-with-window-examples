@@ -85,9 +85,6 @@ async function buildAndRun() {
         sourcemap: true,
         logLevel: 'info',
         external: external,
-        alias: {
-            electron: '@devscholar/node-with-window'
-        }
     });
 
     console.log('Build complete.');
