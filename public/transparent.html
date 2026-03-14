@@ -43,7 +43,7 @@
         <button id="btn">Exit</button>
     </div>
     <script>
-        const { ipcRenderer } = require('electron');
+        const { ipcRenderer } = require('@devscholar/node-with-window');
         document.getElementById('btn').addEventListener('click', () => {
             ipcRenderer.invoke('exit');
         });

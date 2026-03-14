@@ -25,7 +25,7 @@ Examples for [Node with Window](https://github.com/devscholar/node-with-window),
 On Ubuntu 24.04 LTS these are pre-installed with a GNOME desktop. If missing:
 
 ```bash
-sudo apt install gjs gir1.2-gtk-4.0 gir1.2-webkit2-6.0
+sudo apt install gjs gir1.2-gtk-4.0 gir1.2-webkit-6.0
 ```
 
 ## Installation
