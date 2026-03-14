@@ -12,6 +12,10 @@ Examples for [Node with Window](https://github.com/devscholar/node-with-window),
 - PowerShell 5.1
 - .NET Framework 4.8
 - WebView2 runtime (pre-installed on Windows 11; [download](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) for Windows 10)
+- WebView2 SDK DLLs — install with:
+  ```
+  node ../node-with-window/scripts/webview2-install.js install
+  ```
 
 ### Linux
 
@@ -35,37 +39,26 @@ npm install
 ### Linux
 
 If you copied the folder from another machine (e.g. a Windows shared folder),
-**do not** bring the `node_modules` directory — it contains Windows-only binaries.
-Do a clean install instead:
+**do not** bring the `node_modules` or `dist` directories — they may contain
+Windows-only binaries. Do a clean install instead:
 
 ```bash
 rm -rf node_modules dist
 npm install
 ```
 
-`npm install` runs a `postinstall` script that builds the `@devscholar/node-with-gjs`
-dependency from source using the bundled esbuild.
-
 ## Running the Notepad Example
 
-Run the following command with the `--runtime` parameter to select your preferred runtime:
-
 ```bash
-node start.js src/notepad/notepad.ts --runtime=node
+node start.js src/notepad/notepad.ts
 ```
 
-Supported runtimes: `node`, `bun`, `deno`
-
-### Running with Deno or Bun Directly
-
-If you want to run `start.js` directly with Deno or Bun instead of Node.js:
+Supported runtimes (optional `--runtime` flag):
 
 ```bash
-deno run --allow-all start.js src/notepad/notepad.ts
-bun start.js src/notepad/notepad.ts
+node start.js src/notepad/notepad.ts --runtime=bun
+node start.js src/notepad/notepad.ts --runtime=deno
 ```
-
-Note: The `--runtime=deno` and `--runtime=bun` options above use Node.js to run `start.js`, which then spawns the specified runtime to execute the compiled JavaScript. If you want to run `start.js` itself with Deno/Bun, use the commands above instead.
 
 ### What it does
 
@@ -77,6 +70,6 @@ Note: The `--runtime=deno` and `--runtime=bun` options above use Node.js to run 
 
 ### Linux notes
 
-- The WebKit sandbox is disabled automatically by the library
-  (`WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1`), which is needed in VMware
-  and other VMs where `bwrap` cannot create user namespaces.
+- The WebKit sandbox is disabled automatically by the library when running inside
+  VMware (`WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1`). On bare-metal the sandbox
+  runs normally. See the [node-with-window README](https://github.com/devscholar/node-with-window#webkit-sandbox-in-virtual-machines) for details.
