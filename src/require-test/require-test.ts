@@ -22,19 +22,6 @@ async function main() {
     });
 
     win.loadFile(path.join(__dirname, '../../public/require-test.html'));
-
-    win.setMenu([
-        {
-            label: 'File',
-            submenu: [
-                {
-                    label: 'Exit',
-                    accelerator: 'Alt+F4',
-                    click: () => win.close()
-                }
-            ]
-        }
-    ]);
 }
 
 main();
