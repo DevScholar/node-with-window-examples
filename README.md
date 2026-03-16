@@ -56,8 +56,8 @@ node start.js src/notepad/notepad.ts
 Supported runtimes (optional `--runtime` flag):
 
 ```bash
-node start.js src/notepad/notepad.ts --runtime=bun
-node start.js src/notepad/notepad.ts --runtime=deno
+bun start.js src/notepad/notepad.ts --runtime=bun
+deno run --allow-all start.js src/notepad/notepad.ts --runtime=deno
 ```
 
 ### What it does
