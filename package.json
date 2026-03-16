@@ -9,8 +9,9 @@
     "postinstall": "node postinstall.js"
   },
   "dependencies": {
-    "esbuild": "^0.27.3",
-    "@devscholar/node-with-window": "file:../node-with-window"
+    "@devscholar/node-with-window": "file:../node-with-window",
+    "@types/node": "^25.5.0",
+    "esbuild": "^0.27.3"
   },
   "engines": {
     "node": ">=18.0.0"

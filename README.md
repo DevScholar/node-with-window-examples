@@ -47,10 +47,12 @@ rm -rf node_modules dist
 npm install
 ```
 
-## Running the Notepad Example
+## Running the Examples
 
 ```bash
 node start.js src/notepad/notepad.ts
+node start.js src/require-test/require-test.ts
+node start.js src/transparent/transparent.ts
 ```
 
 Supported runtimes (optional `--runtime` flag):
