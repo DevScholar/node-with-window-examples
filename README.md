@@ -1,6 +1,6 @@
 # Node with Window Examples
 
-⚠️ This project is still in pre-alpha stage, expect breaking changes.
+⚠️ This project is still in Alpha stage, expect breaking changes.
 
 Examples for [Node with Window](https://github.com/devscholar/node-with-window), a cross-platform windowing library with Electron-compatible API.
 
