@@ -2,15 +2,12 @@
   "name": "transparent",
   "private": true,
   "type": "module",
+  "main": "main.js",
   "scripts": {
     "start": "node-with-window ."
   },
   "dependencies": {
     "@devscholar/node-with-window": "workspace:*"
-  },
-  "devDependencies": {
-    "@types/node": "^25.5.0",
-    "esbuild": "^0.27.3"
   },
   "engines": {
     "node": ">=18.0.0"

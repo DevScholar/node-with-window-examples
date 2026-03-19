@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from '@devscholar/node-with-window';
 import * as path from 'node:path';
 import * as url from 'node:url';
 
-const __dirname = path.resolve(url.fileURLToPath(new URL('.', import.meta.url)), '..');
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 async function main() {
     await app.whenReady();
@@ -37,32 +37,12 @@ async function main() {
         {
             label: 'File',
             submenu: [
-                {
-                    label: 'New',
-                    accelerator: 'CmdOrCtrl+N',
-                    click: () => win.webContents.send('menu-new')
-                },
-                {
-                    label: 'Open...',
-                    accelerator: 'CmdOrCtrl+O',
-                    click: () => win.webContents.send('menu-open')
-                },
-                {
-                    label: 'Save',
-                    accelerator: 'CmdOrCtrl+S',
-                    click: () => win.webContents.send('menu-save')
-                },
-                {
-                    label: 'Save As...',
-                    accelerator: 'CmdOrCtrl+Shift+S',
-                    click: () => win.webContents.send('menu-save-as')
-                },
+                { label: 'New',       accelerator: 'CmdOrCtrl+N',       click: () => win.webContents.send('menu-new') },
+                { label: 'Open...',   accelerator: 'CmdOrCtrl+O',       click: () => win.webContents.send('menu-open') },
+                { label: 'Save',      accelerator: 'CmdOrCtrl+S',       click: () => win.webContents.send('menu-save') },
+                { label: 'Save As...', accelerator: 'CmdOrCtrl+Shift+S', click: () => win.webContents.send('menu-save-as') },
                 { type: 'separator' },
-                {
-                    label: 'Exit',
-                    accelerator: 'Alt+F4',
-                    click: () => win.close()
-                }
+                { label: 'Exit',      accelerator: 'Alt+F4',            click: () => win.close() }
             ]
         },
         {
@@ -89,20 +69,16 @@ async function main() {
             submenu: [
                 {
                     label: 'About',
-                    click: () => {
-                        win.showMessageBox({
-                            type: 'info',
-                            title: 'About Notepad',
-                            message: 'Notepad Example\nBuilt with node-with-window',
-                            buttons: ['OK']
-                        });
-                    }
+                    click: () => win.showMessageBox({
+                        type: 'info',
+                        title: 'About Notepad',
+                        message: 'Notepad Example\nBuilt with node-with-window',
+                        buttons: ['OK']
+                    })
                 }
             ]
         }
     ]);
-
-    console.log('Notepad started');
 }
 
 main().catch(console.error);

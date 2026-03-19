@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from '@devscholar/node-with-window';
 import * as path from 'node:path';
 import * as url from 'node:url';
 
-const __dirname = path.resolve(url.fileURLToPath(new URL('.', import.meta.url)), '..');
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 async function main() {
     await app.whenReady();
