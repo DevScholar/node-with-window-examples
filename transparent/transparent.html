@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        html, body {
+            margin: 0;
+            background: transparent;
+            width: 300px;
+            height: 300px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+        }
+        button {
+            padding: 10px 28px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            background: #fff;
+            color: #1e40af;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #eff6ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="circle">
+        <button id="btn">Exit</button>
+    </div>
+    <script>
+        const { ipcRenderer } = require('@devscholar/node-with-window');
+        document.getElementById('btn').addEventListener('click', () => {
+            ipcRenderer.invoke('exit');
+        });
+    </script>
+</body>
+</html>

@@ -1,19 +1,16 @@
 {
   "name": "node-with-window-examples",
-  "version": "0.0.0",
-  "description": "Examples for node-with-window",
+  "private": true,
   "type": "module",
   "scripts": {
-    "notepad": "node start.js src/notepad/notepad.ts",
-    "require-test": "node start.js src/require-test/require-test.ts",
-    "postinstall": "node postinstall.js"
-  },
-  "dependencies": {
-    "@devscholar/node-with-window": "file:../node-with-window",
-    "@types/node": "^25.5.0",
-    "esbuild": "^0.27.3"
+    "notepad":      "pnpm --filter notepad start",
+    "transparent":  "pnpm --filter transparent start",
+    "require-test": "pnpm --filter require-test start"
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   }
 }

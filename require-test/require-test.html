@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>window.require — Sync XHR Demo</title>
+</head>
+<body>
+    <h2>window.require — Sync XHR + Local HTTP Server</h2>
+    <p>
+        <code>window.require(moduleName).methodName(...args)</code> is truly synchronous.<br>
+        No <code>await</code>, no callbacks — just like real Electron with <code>nodeIntegration: true</code>.
+    </p>
+
+    <button onclick="runSyncRequire()">Run</button>
+    <p>Time: <span id="time">—</span></p>
+    <pre id="result">—</pre>
+
+    <script>
+        function runSyncRequire() {
+            var t0 = Date.now();
+
+            var os       = window.require('os');
+            var platform = os.platform();
+            var arch     = os.arch();
+            var hostname = os.hostname();
+            var homedir  = os.homedir();
+            var mem      = os.totalmem();
+            var free     = os.freemem();
+
+            var elapsed = Date.now() - t0;
+
+            document.getElementById('time').textContent =
+                elapsed + ' ms for 6 calls (' + Math.round(elapsed / 6) + ' ms each)';
+
+            document.getElementById('result').textContent =
+                'Platform: ' + platform +
+                '\nArch:     ' + arch +
+                '\nHostname: ' + hostname +
+                '\nHomedir:  ' + homedir +
+                '\nMemory:   ' + (mem  / 1024 / 1024 / 1024).toFixed(2) + ' GB total' +
+                '\n          ' + (free / 1024 / 1024 / 1024).toFixed(2) + ' GB free';
+        }
+    </script>
+</body>
+</html>

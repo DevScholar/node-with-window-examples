@@ -1,0 +1,27 @@
+import { app, BrowserWindow } from '@devscholar/node-with-window';
+import * as path from 'node:path';
+import * as url from 'node:url';
+
+const __dirname = path.resolve(url.fileURLToPath(new URL('.', import.meta.url)), '..');
+
+async function main() {
+    await app.whenReady();
+
+    const win = new BrowserWindow({
+        title: 'Require Test',
+        width: 600,
+        height: 400,
+        minWidth: 400,
+        minHeight: 300,
+        resizable: true,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+            partition: 'temp:'
+        }
+    });
+
+    win.loadFile(path.join(__dirname, 'require-test.html'));
+}
+
+main();
