@@ -17,6 +17,9 @@ importers:
       '@devscholar/node-ps1-dotnet':
         specifier: file:../node-ps1-dotnet
         version: file:../node-ps1-dotnet
+      '@devscholar/node-with-gjs':
+        specifier: file:../node-with-gjs
+        version: file:../node-with-gjs
     devDependencies:
       '@types/node':
         specifier: ^25.3.3
@@ -71,6 +74,10 @@ packages:
 
   '@devscholar/node-ps1-dotnet@file:../node-ps1-dotnet':
     resolution: {directory: ../node-ps1-dotnet, type: directory}
+
+  '@devscholar/node-with-gjs@file:../node-with-gjs':
+    resolution: {directory: ../node-with-gjs, type: directory}
+    engines: {node: '>=18.0.0'}
 
   '@emnapi/core@1.9.0':
     resolution: {integrity: sha512-0DQ98G9ZQZOxfUcQn1waV2yS8aWdZ6kJMbYCJB3oUBecjWYO1fqJ+a1DRfPF3O5JEkwqwP1A9QEN/9mYm2Yd0w==}
@@ -1099,6 +1106,8 @@ packages:
 snapshots:
 
   '@devscholar/node-ps1-dotnet@file:../node-ps1-dotnet': {}
+
+  '@devscholar/node-with-gjs@file:../node-with-gjs': {}
 
   '@emnapi/core@1.9.0':
     dependencies:
