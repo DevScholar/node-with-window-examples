@@ -23,7 +23,7 @@ if not defined TARGET (
 )
 
 if not exist "!TARGET!" (
-    echo [node-with-window] Error: !TARGET! not found
+    echo [nww] Error: !TARGET! not found
     exit /b 1
 )
 
@@ -31,7 +31,7 @@ rem Check extension
 set "EXT=!TARGET:~-3!"
 
 if "!EXT!"==".js" (
-    echo [node-with-window] Running !TARGET! with !RUNTIME!...
+    echo [nww] Running !TARGET! with !RUNTIME!...
     if "!RUNTIME!"=="bun"  ( bun   "!TARGET!" !PASS! ) else ^
     if "!RUNTIME!"=="deno" ( deno run --allow-all "!TARGET!" !PASS! ) else ( node "!TARGET!" !PASS! )
     goto :eof
@@ -47,10 +47,10 @@ if not exist "!ESBUILD!" (
     set "EBPRE="
 )
 
-echo [node-with-window] Building !TARGET!...
+echo [nww] Building !TARGET!...
 call "!ESBUILD!" !EBPRE! "!TARGET!" --bundle --outfile=dist\main.js --format=esm --platform=node --target=node18 --sourcemap --external:@devscholar/node-ps1-dotnet
 if errorlevel 1 exit /b 1
 
-echo [node-with-window] Running with !RUNTIME!...
+echo [nww] Running with !RUNTIME!...
 if "!RUNTIME!"=="bun"  ( bun   "dist\main.js" !PASS! ) else ^
 if "!RUNTIME!"=="deno" ( deno run --allow-all "dist\main.js" !PASS! ) else ( node "dist\main.js" !PASS! )

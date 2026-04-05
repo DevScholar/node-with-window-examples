@@ -1,118 +1,42 @@
-// start.js - Build and run TypeScript files with runtime selection
 import { spawn } from 'node:child_process';
 import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import * as esbuild from 'esbuild';
 
-let __filename, __dirname;
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+let runtime = 'node', folder = null;
+for (const arg of process.argv.slice(2)) {
+    if (arg.startsWith('--runtime=')) runtime = arg.slice(10);
+    else if (arg.startsWith('-r='))    runtime = arg.slice(3);
+    else if (!folder)                  folder = arg;
+}
+
+if (!folder) {
+    console.error('Usage: node start.js <example> [--runtime=node|bun|deno]');
+    console.error('       node start.js notepad');
+    console.error('       node start.js transparent --runtime=bun');
+    process.exit(1);
+}
+
+const folderPath = path.resolve(__dirname, folder);
+if (!fs.existsSync(folderPath)) {
+    console.error(`Error: example not found: ${folder}`);
+    process.exit(1);
+}
+
+let main = 'main.js';
 try {
-    __filename = fileURLToPath(import.meta.url);
-    __dirname = path.dirname(__filename);
-} catch {
-    __filename = process.argv[1];
-    __dirname = path.dirname(__filename);
-}
+    const pkg = JSON.parse(fs.readFileSync(path.join(folderPath, 'package.json'), 'utf8'));
+    if (pkg.main) main = pkg.main;
+} catch {}
 
-const args = process.argv.slice(2);
-let runtime = 'node';
-let tsFile = null;
-let extraArgs = [];
-
-for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
-    if (arg.startsWith('--runtime=')) {
-        runtime = arg.split('=')[1];
-    } else if (arg.startsWith('-r=')) {
-        runtime = arg.split('=')[1];
-    } else if (arg.endsWith('.ts') || arg.endsWith('.js')) {
-        tsFile = arg;
-    } else {
-        extraArgs.push(arg);
-    }
-}
-
-if (!tsFile) {
-    console.error('Usage: node start.js <ts-file> [--runtime=node|bun|deno] [args...]');
-    console.error('Example: node start.js counter/counter.ts');
-    console.error('Example: node start.js notepad/notepad.ts --runtime=deno');
+const mainFile = path.join(folderPath, main);
+if (!fs.existsSync(mainFile)) {
+    console.error(`Error: ${main} not found in ${folder}/`);
     process.exit(1);
 }
 
-const targetScript = path.resolve(tsFile);
-
-if (!fs.existsSync(targetScript)) {
-    console.error(`Error: File not found: ${targetScript}`);
-    process.exit(1);
-}
-
-const runtimeFlags = {
-    node: [],
-    bun: [],
-    deno: ['run', '--allow-all']
-};
-
-async function buildAndRun() {
-    console.log('Building TypeScript...');
-
-    const ext = path.extname(targetScript);
-    const baseName = path.basename(targetScript, ext);
-    
-    const srcDir = path.join(__dirname, 'src');
-    const distDir = path.join(__dirname, 'dist');
-    const relativePath = path.relative(srcDir, targetScript);
-    const outfile = path.join(distDir, relativePath.replace(/\.ts$/, '.js'));
-
-    const outDir = path.dirname(outfile);
-    if (!fs.existsSync(outDir)) {
-        fs.mkdirSync(outDir, { recursive: true });
-    }
-
-    const platform = process.platform;
-    const external = platform === 'win32' 
-        ? ['@devscholar/node-ps1-dotnet'] 
-        : ['@devscholar/node-with-gjs'];
-
-    console.log(`Target platform: ${platform}`);
-
-    await esbuild.build({
-        entryPoints: [targetScript],
-        bundle: true,
-        outfile: outfile,
-        format: 'esm',
-        platform: 'node',
-        target: 'node18',
-        sourcemap: true,
-        logLevel: 'info',
-        external: external,
-    });
-
-    console.log('Build complete.');
-    console.log(`Running with ${runtime}:`, path.relative(__dirname, outfile));
-
-    const runtimeCmd = runtime;
-    const runtimeArgs = runtimeFlags[runtime] || [];
-    const finalArgs = runtime === 'deno' 
-        ? [...runtimeArgs, outfile, ...extraArgs]
-        : [...runtimeArgs, outfile, ...extraArgs];
-
-    const proc = spawn(runtimeCmd, finalArgs, {
-        stdio: 'inherit',
-        cwd: path.dirname(targetScript),
-        env: { ...process.env }
-    });
-
-    proc.on('exit', (code) => {
-        process.exit(code || 0);
-    });
-
-    proc.on('error', (err) => {
-        console.error(`Failed to start ${runtime}:`, err.message);
-        process.exit(1);
-    });
-}
-
-buildAndRun().catch((err) => {
-    console.error('Error:', err.message);
-    process.exit(1);
-});
+const runArgs = runtime === 'deno' ? ['run', '--allow-all', mainFile] : [mainFile];
+const proc = spawn(runtime, runArgs, { stdio: 'inherit', cwd: folderPath });
+proc.on('exit', code => process.exit(code ?? 0));

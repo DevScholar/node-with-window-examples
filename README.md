@@ -6,65 +6,34 @@ Examples for [Node with Window](https://github.com/devscholar/node-with-window),
 
 ## Running the Examples
 
-```bash
-pnpm install
-```
-
-### From an example folder (most Electron-like)
+Install dependencies:
 
 ```bash
-cd notepad
-pnpm start
+npm install
 ```
 
-### From the examples root
+Then run any example by name:
 
 ```bash
-pnpm notepad
-pnpm transparent
-pnpm require-test
+node start.js notepad
+node start.js transparent
+node start.js require-test
 ```
 
-### With a different runtime
+With a different runtime:
 
 ```bash
-cd notepad
-pnpm start -- --runtime=bun
-pnpm start -- --runtime=deno
+node start.js notepad --runtime=bun
+node start.js notepad --runtime=deno
 ```
 
-### Using the native shell scripts directly (no npm)
-
-**Windows:**
-```bat
-cd notepad
-..\node-with-window.bat .
-..\node-with-window.bat . --runtime=bun
-```
-
-**Linux:**
-```bash
-cd notepad
-../node-with-window.sh .
-../node-with-window.sh . --runtime=bun
-```
-
-## Project Structure
-
-Each example is an independent package in its own folder:
+## Examples
 
 ```
 notepad/        — text editor with menus and keyboard shortcuts
 transparent/    — transparent always-on-top window
 require-test/   — demonstrates window.require() (nodeIntegration)
 ```
-
-Each folder contains:
-- `main.ts` — entry point (Electron-like API)
-- `package.json` — `"start": "node-with-window ."`
-- HTML and assets
-
-## What the Examples Do
 
 ### notepad
 - Text editor window
@@ -91,7 +60,7 @@ Each folder contains:
 - WebView2 runtime (pre-installed on Windows 11; [download](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) for Windows 10)
 - WebView2 SDK DLLs — install with:
   ```
-  node ../node-with-window/scripts/webview2-install.js install
+  node node_modules/@devscholar/node-with-window/scripts/webview2-install.js install
   ```
 
 ### Linux
@@ -114,8 +83,8 @@ If you copied the folder from another machine (e.g. a Windows shared folder),
 Windows-only binaries. Do a clean install instead:
 
 ```bash
-find . -name node_modules -prune -exec rm -rf {} \; 2>/dev/null; rm -rf */dist
-pnpm install
+find . -name node_modules -prune -exec rm -rf {} \; 2>/dev/null
+npm install
 ```
 
 ### Linux notes

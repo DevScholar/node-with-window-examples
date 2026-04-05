@@ -28,14 +28,14 @@ if [ -z "$TARGET" ]; then
 fi
 
 if [ ! -f "$TARGET" ]; then
-    echo "[node-with-window] Error: $TARGET not found" >&2
+    echo "[nww] Error: $TARGET not found" >&2
     exit 1
 fi
 
 # Check extension
 case "$TARGET" in
     *.js)
-        echo "[node-with-window] Running $TARGET with $RUNTIME..."
+        echo "[nww] Running $TARGET with $RUNTIME..."
         case "$RUNTIME" in
             bun)  bun "$TARGET" $PASS ;;
             deno) deno run --allow-all "$TARGET" $PASS ;;
@@ -50,7 +50,7 @@ SD="$(cd "$(dirname "$0")" && pwd)"
 EB="$SD/node_modules/.bin/esbuild"
 [ -x "$EB" ] || EB="npx esbuild"
 
-echo "[node-with-window] Building $TARGET..."
+echo "[nww] Building $TARGET..."
 $EB "$TARGET" \
     --bundle \
     --outfile=dist/main.js \
@@ -60,7 +60,7 @@ $EB "$TARGET" \
     --sourcemap \
     --external:@devscholar/node-with-gjs
 
-echo "[node-with-window] Running with $RUNTIME..."
+echo "[nww] Running with $RUNTIME..."
 case "$RUNTIME" in
     bun)  bun dist/main.js $PASS ;;
     deno) deno run --allow-all dist/main.js $PASS ;;

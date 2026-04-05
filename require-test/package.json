@@ -4,7 +4,7 @@
   "type": "module",
   "main": "main.js",
   "scripts": {
-    "start": "node-with-window ."
+    "start": "nww ."
   },
   "dependencies": {
     "@devscholar/node-with-window": "workspace:*"

@@ -3,17 +3,20 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "notepad":      "pnpm --filter notepad start",
-    "transparent":  "pnpm --filter transparent start",
+    "notepad": "pnpm --filter notepad start",
+    "transparent": "pnpm --filter transparent start",
     "require-test": "pnpm --filter require-test start"
   },
   "engines": {
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@devscholar/node-ps1-dotnet": "file:../node-ps1-dotnet"
+    "@devscholar/node-ps1-dotnet": "file:../node-ps1-dotnet",
+    "esbuild": "^0.28.0"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
