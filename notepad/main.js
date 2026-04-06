@@ -8,6 +8,9 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 async function main() {
     await app.whenReady();
 
+    let isModified = false;
+    let forceClose = false;
+
     const win = new BrowserWindow({
         title: 'Notepad (node-with-window)',
         width: 800,
@@ -29,6 +32,41 @@ async function main() {
 
     ipcMain.handle('show-save-dialog', (_event, options) => {
         return win.showSaveDialog(options);
+    });
+
+    ipcMain.on('modified-changed', (_event, modified) => {
+        isModified = modified;
+    });
+
+    ipcMain.on('save-complete', (_event, saved) => {
+        if (saved) {
+            forceClose = true;
+            win.close();
+        }
+    });
+
+    win.on('close', (e) => {
+        if (forceClose || !isModified) return;
+        e.preventDefault();
+
+        const result = win.showMessageBox({
+            type: 'question',
+            title: 'Notepad',
+            message: 'Do you want to save changes?',
+            buttons: ['Save', "Don't Save", 'Cancel']
+        });
+
+        if (result === 2) return; // Cancel — keep window open
+
+        if (result === 1) {
+            // Don't Save — close without saving
+            forceClose = true;
+            win.close();
+            return;
+        }
+
+        // Save — ask renderer to save, then close on confirmation
+        win.webContents.send('menu-save-for-close');
     });
 
     win.loadFile(path.join(__dirname, 'notepad.html'));

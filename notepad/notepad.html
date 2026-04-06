@@ -54,6 +54,7 @@
         function setModified(modified) {
             isModified = modified;
             updateTitle();
+            window.ipcRenderer?.send('modified-changed', isModified);
         }
 
         function updateTitle() {
@@ -165,6 +166,10 @@
             window.ipcRenderer.on('menu-open', () => openFile());
             window.ipcRenderer.on('menu-save', () => save());
             window.ipcRenderer.on('menu-save-as', () => saveFileAs());
+            window.ipcRenderer.on('menu-save-for-close', async () => {
+                await save();
+                window.ipcRenderer.send('save-complete', !isModified);
+            });
 
             // Handle Edit menu commands sent from the main process.
             // Focus the editor first so execCommand operates on it.
