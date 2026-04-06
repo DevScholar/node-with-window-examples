@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from '@devscholar/node-with-window';
 import * as path from 'node:path';
 import * as url from 'node:url';
 
+
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 async function main() {
@@ -23,8 +24,7 @@ async function main() {
     });
 
     ipcMain.handle('show-open-dialog', (_event, options) => {
-        const result = win.showOpenDialog(options);
-        return result && result.length > 0 ? result[0] : undefined;
+        return win.showOpenDialog(options);
     });
 
     ipcMain.handle('show-save-dialog', (_event, options) => {
