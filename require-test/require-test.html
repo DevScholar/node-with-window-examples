@@ -2,15 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>window.require — Sync XHR Demo</title>
+    <title>window.require</title>
 </head>
 <body>
     <h2>window.require</h2>
-    <p>
-        <code>window.require(moduleName).methodName(...args)</code> is truly synchronous.<br>
-        No <code>await</code>, no callbacks — just like real Electron with <code>nodeIntegration: true</code>.
-    </p>
-
     <button onclick="runSyncRequire()">Run</button>
     <p>Time: <span id="time">—</span></p>
     <pre id="result">—</pre>
