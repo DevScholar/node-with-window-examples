@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from '@devscholar/node-with-window';
+import { app, BrowserWindow, ipcMain, dialog } from '@devscholar/node-with-window';
 import * as path from 'node:path';
 import * as url from 'node:url';
 
@@ -45,20 +45,20 @@ async function main() {
         }
     });
 
-    win.on('close', (e) => {
+    win.on('close', async (e) => {
         if (forceClose || !isModified) return;
         e.preventDefault();
 
-        const result = win.showMessageBox({
+        const { response } = await dialog.showMessageBox(win, {
             type: 'question',
             title: 'Notepad',
             message: 'Do you want to save changes?',
             buttons: ['Save', "Don't Save", 'Cancel']
         });
 
-        if (result === 2) return; // Cancel — keep window open
+        if (response === 2) return; // Cancel — keep window open
 
-        if (result === 1) {
+        if (response === 1) {
             // Don't Save — close without saving
             forceClose = true;
             win.close();
@@ -107,7 +107,7 @@ async function main() {
             submenu: [
                 {
                     label: 'About',
-                    click: () => win.showMessageBox({
+                    click: () => dialog.showMessageBox(win, {
                         type: 'info',
                         title: 'About Notepad',
                         message: 'Notepad Example\nBuilt with node-with-window',
