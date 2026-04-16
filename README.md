@@ -23,8 +23,8 @@ node start.js require-test
 With a different runtime:
 
 ```bash
-node start.js notepad --runtime=bun
-node start.js notepad --runtime=deno
+bun start.js notepad --runtime=bun
+deno --allow-all start.js notepad --runtime=deno
 ```
 
 ## Examples
