@@ -2,5 +2,3 @@ packages:
   - 'notepad'
   - 'transparent'
   - 'require-test'
-  - 'custom-protocol'
-  - '../node-with-window'

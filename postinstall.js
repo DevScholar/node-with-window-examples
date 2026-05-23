@@ -39,6 +39,10 @@ function buildDist(pkgName, srcFiles) {
     }
 }
 
+if (process.platform === 'darwin') {
+    buildDist('@devscholar/node-with-jxa', ['src/index.ts', 'src/ipc.ts']);
+}
+
 if (process.platform === 'linux') {
     buildDist('@devscholar/node-with-gjs', ['src/index.ts', 'src/ipc.ts']);
 }

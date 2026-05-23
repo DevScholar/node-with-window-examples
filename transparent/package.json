@@ -7,7 +7,7 @@
     "start": "nww ."
   },
   "dependencies": {
-    "@devscholar/node-with-window": "workspace:*"
+    "@devscholar/node-with-window": "link:../../node-with-window"
   },
   "engines": {
     "node": ">=18.0.0"

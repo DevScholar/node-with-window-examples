@@ -11,8 +11,12 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@devscholar/node-ps1-dotnet": "file:../node-ps1-dotnet",
     "esbuild": "^0.28.0"
+  },
+  "optionalDependencies": {
+    "@devscholar/node-ps1-dotnet": "file:../node-ps1-dotnet",
+    "@devscholar/node-with-jxa": "file:../node-with-jxa",
+    "@devscholar/node-with-gjs": "file:../node-with-gjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
