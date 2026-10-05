@@ -57,7 +57,7 @@
                     case 'shrink':     window.ipcRenderer.send('win-size-shrink'); break;
                     case 'set-title':
                         const title = document.getElementById('title-input').value;
-                        if (title) window.ipcRenderer.send('win-set-title', title);
+                        window.ipcRenderer.send('win-set-title', title);
                         break;
                 }
             });
