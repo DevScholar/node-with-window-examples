@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Window Control</title>
+</head>
+<body>
+
+    <h1>Window Control</h1>
+
+    <p id="gnome-warning"></p>
+
+    <p>Move:</p>
+    <button data-action="move-left">Left</button>
+    <button data-action="move-right">Right</button>
+    <button data-action="move-up">Up</button>
+    <button data-action="move-down">Down</button>
+    <button data-action="center">Center</button>
+
+    <p>Resize:</p>
+    <button data-action="grow">Grow</button>
+    <button data-action="shrink">Shrink</button>
+
+    <p>Title:</p>
+    <input id="title-input" type="text" placeholder="New window title">
+    <button data-action="set-title">Set title</button>
+
+    <p id="status"></p>
+
+    <script type="module">
+        const statusEl = document.getElementById('status');
+
+        function updateStatus(state) {
+            statusEl.textContent =
+                `x: ${state.x}  y: ${state.y}  w: ${state.w}  h: ${state.h}`;
+        }
+
+        async function refreshState() {
+            try {
+                const state = await window.ipcRenderer.invoke('win-get-state');
+                updateStatus(state);
+            } catch (e) {
+                console.error('Failed to query window state:', e);
+            }
+        }
+
+        document.querySelectorAll('button[data-action]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.dataset.action;
+                switch (action) {
+                    case 'move-left':  window.ipcRenderer.send('win-move-left');  break;
+                    case 'move-right': window.ipcRenderer.send('win-move-right'); break;
+                    case 'move-up':    window.ipcRenderer.send('win-move-up');    break;
+                    case 'move-down':  window.ipcRenderer.send('win-move-down');  break;
+                    case 'center':     window.ipcRenderer.send('win-center');     break;
+                    case 'grow':       window.ipcRenderer.send('win-size-grow');  break;
+                    case 'shrink':     window.ipcRenderer.send('win-size-shrink'); break;
+                    case 'set-title':
+                        const title = document.getElementById('title-input').value;
+                        if (title) window.ipcRenderer.send('win-set-title', title);
+                        break;
+                }
+            });
+        });
+
+        if (window.ipcRenderer && window.ipcRenderer.on) {
+            window.ipcRenderer.on('win-state-changed', (_event, state) => {
+                updateStatus(state);
+            });
+        }
+
+        refreshState();
+
+        // Plain-text warning on GNOME desktops, where the window-move API is a
+        // no-op. Buttons stay active on purpose.
+        (async () => {
+            try {
+                const isGnome = await window.ipcRenderer.invoke('win-is-gnome');
+                if (isGnome) {
+                    document.getElementById('gnome-warning').textContent =
+                        'Note: you are running a GNOME desktop. GNOME does not ' +
+                        'allow windows to be moved programmatically, so the move ' +
+                        'buttons below may have no effect.';
+                }
+            } catch (e) {
+                console.error('Failed to detect desktop environment:', e);
+            }
+        })();
+    </script>
+</body>
+</html>

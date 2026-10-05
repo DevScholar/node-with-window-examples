@@ -18,6 +18,7 @@ Then run any example by name:
 node start.js notepad
 node start.js transparent
 node start.js require-test
+node start.js window-control
 ```
 
 With a different runtime:
@@ -33,6 +34,7 @@ deno --allow-all start.js notepad --runtime=deno
 notepad/        — text editor with menus and keyboard shortcuts
 transparent/    — transparent always-on-top window
 require-test/   — demonstrates window.require() (nodeIntegration)
+window-control/ — move & resize the window from in-page buttons
 ```
 
 ### notepad
@@ -49,6 +51,16 @@ require-test/   — demonstrates window.require() (nodeIntegration)
 ### require-test
 - Demonstrates `window.require()` with `nodeIntegration: true`
 - Calls Node.js `os` module synchronously from the renderer
+
+### window-control
+- Move the window (arrow buttons / center)
+- Resize the window (grow / shrink / size presets)
+- Toggle resizable on/off
+- Status bar shows live `x / y / w / h` (updates when you drag or resize by hand too)
+
+> On Linux (gjs-gtk4), programmatic `setPosition` / `center` are no-ops
+> because GTK4 leaves window placement to the compositor. The move buttons
+> will log a warning and have no visible effect; resize works normally.
 
 ## Prerequisites
 

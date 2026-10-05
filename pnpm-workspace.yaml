@@ -2,3 +2,4 @@ packages:
   - 'notepad'
   - 'transparent'
   - 'require-test'
+  - 'window-control'

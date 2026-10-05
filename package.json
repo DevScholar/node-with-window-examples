@@ -5,7 +5,8 @@
   "scripts": {
     "notepad": "pnpm --filter notepad start",
     "transparent": "pnpm --filter transparent start",
-    "require-test": "pnpm --filter require-test start"
+    "require-test": "pnpm --filter require-test start",
+    "window-control": "pnpm --filter window-control start"
   },
   "engines": {
     "node": ">=18.0.0"
