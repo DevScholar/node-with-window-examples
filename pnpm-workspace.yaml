@@ -3,3 +3,4 @@ packages:
   - 'transparent'
   - 'require-test'
   - 'window-control'
+  - 'multi-window'

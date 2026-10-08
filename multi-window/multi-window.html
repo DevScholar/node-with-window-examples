@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multi-Window</title>
+</head>
+<body>
+    <p>seq = <span id="seq">—</span></p>
+    <p>os  = <span id="os">—</span></p>
+
+    <script>
+        // Same script in every window. Both calls round-trip through the
+        // nww:// bridge into the single Node.js process that owns all windows:
+        //
+        //   window.require('./shared-state.cjs').next()  → shared counter,
+        //       one module instance across every window (proves one Node).
+        //   window.require('os')                         → Node's os module,
+        //       full OS name printed from Node, not the browser.
+        (function () {
+            var shared = window.require('./shared-state.cjs');
+            var os = window.require('os');
+
+            var seq = shared.next();
+
+            var full = os.type() + ' ' + os.release();
+            if (typeof os.version === 'function') {
+                try { full += ' [' + os.version() + ']'; } catch (e) {}
+            }
+            full += ' (' + os.arch() + ')';
+
+            document.getElementById('seq').textContent = seq + ' of ' + shared.total();
+            document.getElementById('os').textContent = full;
+        })();
+    </script>
+</body>
+</html>

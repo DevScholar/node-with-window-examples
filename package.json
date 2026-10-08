@@ -6,7 +6,8 @@
     "notepad": "pnpm --filter notepad start",
     "transparent": "pnpm --filter transparent start",
     "require-test": "pnpm --filter require-test start",
-    "window-control": "pnpm --filter window-control start"
+    "window-control": "pnpm --filter window-control start",
+    "multi-window": "pnpm --filter multi-window start"
   },
   "engines": {
     "node": ">=18.0.0"
